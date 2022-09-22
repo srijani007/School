@@ -18,7 +18,7 @@ namespace UserEnrollment.Controllers
         }
 
         [HttpPost("CreateCourse")]
-        public ActionResult<List<Course>> Createcourses(CourseDetails course)
+        public ActionResult<bool> Createcourses(CourseDetails course)
         {
             try
             {
@@ -26,11 +26,11 @@ namespace UserEnrollment.Controllers
                 if (courseData == false)
                 {
                     var result = new List<string>();
-                    return Ok(result);
+                    return Ok(new  { result });
                 }
                 else
                 {
-                    return Ok(new { courseData });
+                    return  courseData ;
                 }
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace UserEnrollment.Controllers
                 }
                 else
                 {
-                    return Ok(content);
+                    return content;
                 }
             }
             catch (Exception ex)

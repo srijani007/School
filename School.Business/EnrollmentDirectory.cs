@@ -23,7 +23,7 @@ namespace School.Business
         /// <param name="enrolls">enrollment details</param>
         /// <returns>success message</returns>
         /// <exception cref="Exception"></exception>
-        public bool AddEnrollments(EnrollmentDetails enrolls)
+        public bool AddEnrollment(EnrollmentDetails enrolls)
         {
             try
             {

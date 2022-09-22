@@ -16,7 +16,7 @@ namespace UserEnrollment.Controllers
         }
 
         [HttpGet("GetAllEnrollments")]
-        public ActionResult<List<Enrollment>> GetAllCourses()
+        public ActionResult<List<Enrollment>> GetAllEnrollments()
         {
             try
             {
@@ -37,11 +37,11 @@ namespace UserEnrollment.Controllers
         }
 
         [HttpPost("CreateEnrollment")]
-        public ActionResult<List<Enrollment>> AddEnrollments([FromBody] EnrollmentDetails enrollment)
+        public ActionResult<bool> AddEnrollments([FromBody] EnrollmentDetails enrollment)
         {
             try
             {
-                var enrolldata = _enrollmentDirectory.AddEnrollments(enrollment);
+                var enrolldata = _enrollmentDirectory.AddEnrollment(enrollment);
                 if (enrolldata == false)
                 {
                     var result = "Already enrolled to this course";
@@ -49,7 +49,7 @@ namespace UserEnrollment.Controllers
                 }
                 else
                 {
-                    return Ok(new { enrolldata });
+                    return enrolldata;
                 }
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace UserEnrollment.Controllers
                 }
                 else
                 {
-                    return Ok(idDetails);
+                    return Ok( idDetails );
                 }
             }
             catch (Exception ex)
