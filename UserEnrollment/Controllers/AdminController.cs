@@ -9,89 +9,28 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Web;
 using Microsoft.VisualStudio.Services.UserAccountMapping;
+using Microsoft.AspNetCore.Authentication;
 
 namespace UserEnrollment.Controllers
 {
-   // [AuthenticationFilter]
-   //[BasicAuthentication]
+ 
     [ApiController]
-    [Route("[Controller]")]
+   // [Route("[Controller]")]
     [Produces("application/json")]
 
    
     public class AdminController : Controller 
-    {
-
-
- 
+    { 
         private  IAdminDirectory _adminDirectory;
-        private IAuthenticationDirectory _authenticationDirectory;
+        
 
-        public AdminController(IAdminDirectory adminDirectory, IAuthenticationDirectory authenticationDirectory)
+        public AdminController(IAdminDirectory adminDirectory)
         {
             _adminDirectory = adminDirectory;
-            _authenticationDirectory = authenticationDirectory;
         }
 
-        //protected   Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        //{
-        //    try
-        //    {
-
-        //        var authenticationToken = request.Headers.GetValues("Authorization").FirstOrDefault();
-        //        if (authenticationToken != null)
-        //        {
-        //            byte[] data = Convert.FromBase64String(authenticationToken);
-        //            string decodedAuthenticationToken = Encoding.UTF8.GetString(data);
-        //            string[] UsernamePasswordArray = decodedAuthenticationToken.Split(':');
-        //            string username = UsernamePasswordArray[0];
-        //            string password = UsernamePasswordArray[1];
-                    
-        //             List<User> result = _authenticationDirectory.validateuser(username ,password);
-        //           // User obj=new _a
-        //            //  string output = new AuthenticationRepository().validateuser(UserLogin );
-        //            //var result = _authenticationDirectory.validateuser(UserLogin usersdetails);
-        //            //string ObjUser = new 
-        //            // UserMaster ObjUser = new ValidateUser().CheckUserCredentials(username, password);
-        //            if (result != null)
-        //            {
-        //                var identity = new GenericIdentity(result[0].UserName);
-        //                identity.AddClaim(new Claim("UserName", result[0].UserName));
-        //                IPrincipal principal = new GenericPrincipal(identity, result[0].IdRole.Split(','));
-        //                Thread.CurrentPrincipal = principal;
-        //                //if (HttpContext.Current. != null)
-        //                //{
-        //                //    HttpContext.Current.User = principal;
-        //                //}
-        //                // return   base.SendAsync(request, cancellationToken);
-        //                return null;
-        //            }
-        //            else
-        //            {
-        //                var response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-        //                var tsc = new TaskCompletionSource<HttpResponseMessage>();
-        //                tsc.SetResult(response);
-        //                return tsc.Task;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-        //            var tsc = new TaskCompletionSource<HttpResponseMessage>();
-        //            tsc.SetResult(response);
-        //            return tsc.Task;
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        var response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-        //        var tsc = new TaskCompletionSource<HttpResponseMessage>();
-        //        tsc.SetResult(response);
-        //        return tsc.Task;
-        //    }
-        //}
-
-        [HttpPost("SignIn")]
+        [Route("[Controller]/SignIn")]
+        [HttpPost]
        
         public ActionResult<List<User>> SignIn(UserLogin userLogin)
         {
@@ -105,30 +44,29 @@ namespace UserEnrollment.Controllers
                 }
                 else
                 {
-
                     return Ok(null);
                 }
 
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                 throw new Exception(ex.Message);
+               // _logger.LogError(ex.Message);
             }
         }
 
-
-        [HttpPost("CreateUser")]
+        [Route("[Controller]/CreateUser")]
+        [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
         
         public ActionResult<string> CreateUsers(UserDetails user)
         {
             try
-            {
-               
+            {               
                 var userData = _adminDirectory.AddUsers(user);
                 if (userData == null)
                 {
-                    var result = "Login Failed";// new List<string>();
+                    var result = "Adding user failed";
                     return Ok(new { result });                   
                 }
                 else
@@ -142,7 +80,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpGet("GetUsers")]
+        [Route("[Controller]/GetUsers")]        
+        [HttpGet]
 
         public ActionResult<List<User>> GetAllUsers()
         {
@@ -164,7 +103,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPut("UpdateUserdetails")]
+        [Route("[Controller]/UpdateUserdetails")]
+        [HttpPut]
         public ActionResult<string> EditUserDeatils([FromBody] UserDetails user)
         {
             try
@@ -186,7 +126,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPost("GetDetailsbyUserId")]
+        [Route("[Controller]/GetDetailsbyUserId")]
+        [HttpPost]
         public ActionResult<List<User>> FetchUserContent([FromBody] GetUserDetailsbyId userDetailsbyId)
         {
             try
@@ -207,7 +148,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPost("GetDetailsbyUserName")]
+        [Route("[Controller]/GetDetailsbyUserName")]
+        [HttpPost]
         public ActionResult<List<User>> FetchUserContentbyname([FromBody] GetUserDetailsbyName userDetailsbyname)
         {
             try

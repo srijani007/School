@@ -5,17 +5,17 @@ using School.Model.SchoolModel;
 namespace UserEnrollment.Controllers
 {
     [ApiController]
-    [Route("[Controller]")]
+    
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationDirectory _authenticationDirectory;
         private readonly IConfiguration _configuration;
-        //  private readonly IAuthorServices _authorServices;
-        public AuthenticationController(IConfiguration configuration, IAuthenticationDirectory authenticationDirectory)//, IAuthorServices authorServices)
+        private readonly ILogger<AdminController> _logger;
+        public AuthenticationController(IConfiguration configuration, IAuthenticationDirectory authenticationDirectory, ILogger<AdminController> logger)
         {
             this._configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _authenticationDirectory = authenticationDirectory;//?? throw new ArgumentNullException(nameof(authenticationServices));
-                                                             //  _authorServices = authorServices;
+            _authenticationDirectory = authenticationDirectory;
+            _logger = logger;   
         }
 
         private class RequestedUserInfo
@@ -35,7 +35,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPost("SignIn")]
+        [Route("[Controller]/SignIn")]
+        [HttpPost]
         public ActionResult<string> Validate(UserLogin usercreds)
         {
             try
@@ -64,8 +65,10 @@ namespace UserEnrollment.Controllers
                     return Unauthorized();
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                string Message = "User not found";
+                _logger.LogError(Message,ex.Message);
                 return Unauthorized();
             }
         }
@@ -77,9 +80,7 @@ namespace UserEnrollment.Controllers
                 List<User> list = _authenticationDirectory.validateuser(userLogin.UserName,userLogin.Password);
                 foreach (var item in list)
                 {
-                    //Userid = item.User_Id
                     return new RequestedUserInfo(item.Id, item.UserName, item.IdRole, item.Email, item.Password);
-
                 }
                 return null;
             }

@@ -19,7 +19,7 @@ namespace School.Repository
         {
             _schoolContext.Users.Add(details);
             _schoolContext.SaveChanges();
-            return "Signed up successfully!!";
+            return "Created user successfully!!";
         }
         public List<User> Login(string username, string password)
         {
@@ -34,7 +34,6 @@ namespace School.Repository
                 {
                     return null;
                 }
-
             }
             catch (Exception ex)
             {

@@ -5,8 +5,7 @@ using School.Model.SchoolModel;
 namespace UserEnrollment.Controllers
 {
     [Produces("application/json")]
-    [ApiController]
-    [Route("[Controller]")]
+    [ApiController]   
 
     public class CourseController : Controller
     {
@@ -17,7 +16,8 @@ namespace UserEnrollment.Controllers
             _courseDirectory = courseDirectory;
         }
 
-        [HttpPost("CreateCourse")]
+        [Route("[Controller]/CreateCourse")]
+        [HttpPost]
         public ActionResult<bool> Createcourses(CourseDetails course)
         {
             try
@@ -39,7 +39,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpGet("GetAllCourses")]
+        [Route("[Controller]/GetAllCourses")]
+        [HttpGet]
         public ActionResult<List<Course>> GetAllCourses()
         {
             try
@@ -60,7 +61,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPut("UpdateCoursedetails")]
+        [Route("[Controller]/UpdateCoursedetails")]
+        [HttpPut]
         public ActionResult<string> EditCouserDeatils([FromBody] CourseDetails course)
         {
             try
@@ -82,7 +84,8 @@ namespace UserEnrollment.Controllers
             }
         }
 
-        [HttpPost("GetDetailsbyCourseId")]
+        [Route("[Controller]/GetDetailsbyCourseId")]
+        [HttpPost]
         public ActionResult<List<Course>> FetchCourseContent([FromBody] GetCourseDetailsbyId courseDetailsbyId)
         {
             try

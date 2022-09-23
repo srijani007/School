@@ -13,7 +13,8 @@
 
 //namespace School.Business
 //{
-//    public class BasicAuthentication : Attribute
+    
+//    public class BasicAuthentication : DelegatingHandler
 //    {
 
 //        //private readonly IAuthenticationDirectory _authenticationDirectory;
@@ -22,8 +23,8 @@
 //        //{
 //        //    _authenticationDirectory = authenticationDirectory;
 //        //}
-//      //  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
-//        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+//        //  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
+//        protected  Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 //        {
 //            try
 //            {
@@ -35,7 +36,7 @@
 //                    string[] UsernamePasswordArray = decodedAuthenticationToken.Split(':');
 //                    string username = UsernamePasswordArray[0];
 //                    string password = UsernamePasswordArray[1];
-//                   // List<User> result = _authenticationDirectory.validateuser(username, password);
+//                    // List<User> result = _authenticationDirectory.validateuser(username, password);
 //                    //  string output = new AuthenticationRepository().validateuser(UserLogin );
 //                    //var result = _authenticationDirectory.validateuser(UserLogin usersdetails);
 //                    //string ObjUser = new 
@@ -46,29 +47,29 @@
 //                    //    identity.AddClaim(new Claim("UserName", result[0].UserName));
 //                    //    IPrincipal principal = new GenericPrincipal(identity, result[0].IdRole.Split(','));
 //                    //    Thread.CurrentPrincipal = principal;
-//                        //if (HttpContext.Current != null)
-//                        //{
-//                        //    HttpContext.Current.User = principal;
-//                        //}
-//                        // return base.SendAsync(request, cancellationToken);
-//                       return null;
-//                    }
-//                    else
-//                    {
-//                        var response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-//                        var tsc = new TaskCompletionSource<HttpResponseMessage>();
-//                        tsc.SetResult(response);
-//                        return tsc.Task;
-//                    }
+//                    //if (HttpContext.Current != null)
+//                    //{
+//                    //    HttpContext.Current.User = principal;
+//                    //}
+//                    // return base.SendAsync(request, cancellationToken);
+//                    return null;
 //                }
-//                //else
-//                //{
-//                //    var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-//                //    var tsc = new TaskCompletionSource<HttpResponseMessage>();
-//                //    tsc.SetResult(response);
-//                //    return tsc.Task;
-//                //}
-            
+//                else
+//                {
+//                    var response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+//                    var tsc = new TaskCompletionSource<HttpResponseMessage>();
+//                    tsc.SetResult(response);
+//                    return tsc.Task;
+//                }
+//            }
+//            //else
+//            //{
+//            //    var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+//            //    var tsc = new TaskCompletionSource<HttpResponseMessage>();
+//            //    tsc.SetResult(response);
+//            //    return tsc.Task;
+//            //}
+
 //            catch
 //            {
 //                var response = new HttpResponseMessage(HttpStatusCode.Forbidden);

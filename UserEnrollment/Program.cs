@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using School.Business;
 using School.Model.SchoolModel;
 using School.Repository;
 using System.Text;
+using System.Web.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IAdminDirectory, AdminDirectory>();
 builder.Services.AddTransient<IEnrollmentDirectory, EnrollmentDirectory>();
@@ -41,20 +44,40 @@ builder.Services.AddCors((setup) =>
         options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
     });
 });
+
+
+//HttpConfiguration config = new HttpConfiguration();
+////public static void Register(HttpConfiguration config)
+////{
+//   config.MessageHandlers.Add(new BasicAuthentication());
+
+//// Web API routes
+
+//    config.MapHttpAttributeRoutes();
+
+//    config.Routes.MapHttpRoute(
+
+//    name: "DefaultApi",
+
+//    routeTemplate: "api/{controller}/{id}",
+
+//    defaults: new { id = RouteParameter.Optional }
+//);
+////}
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-//app.UseMiddleware<BasicAuthentication>();
-
 app.UseHttpsRedirection();
 
 app.UseCors("default");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
